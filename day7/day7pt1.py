@@ -6,7 +6,7 @@ with open("day7/input7.txt") as f:
 
 
 biddicts = {x.split(" ")[0]: int(x.split(" ")[1]) for x in lines}
-hands = [x.split(" ")[0] for x in lines]
+hands = biddicts.keys()
 
 handranks = [[], [], [], [], [], [], []] # fivekind, fourkind, full house, threekind, twopair, onepair, highcard
 
@@ -49,7 +49,7 @@ for hand in hands:
   else:
     handranks[6].append(hand)
 
-print(handranks)
+# print(handranks)
 
 for r in handranks:
   if len(r) == 1:
