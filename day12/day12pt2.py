@@ -1,42 +1,30 @@
-from functools import lru_cache
-with open("day12/test12.txt") as f:
+from functools import cache
+with open("day12/input12.txt") as f:
     lines = f.readlines()
 
-@lru_cache(maxsize=None)
-def checkLineGrouping(s : str, g : tuple, hash_count=0, group_count=0):
-  # if we are all out, return 1
-  if s == "":
-    if group_count == len(g):
-      return 1
+@cache
+def checkLineGrouping(s : str, g : tuple, hash_count=0):
+  if not s:
+    return (len(g) == 0 and hash_count == 0) or (len(g) == 1 and g[0] == hash_count)
+
+  total = 0
+  if s[0] == "?":
+    total += checkLineGrouping("#" + s[1:], g, hash_count) + checkLineGrouping("." + s[1:], g, hash_count)
+  elif s[0] == ".":
+    if hash_count > 0:
+      if hash_count == g[0]:
+          total += checkLineGrouping(s[1:], g[1:], 0)
+      else:
+        return 0
     else:
+      total += checkLineGrouping(s[1:], g, 0)
+  elif s[0] == "#":
+    hash_count += 1
+    if len(g) == 0 or hash_count > g[0]:
       return 0
-  # if it's ever invalid, return 0
-  # invalid cases:
-    # if amount of #s in s is greater than sum of g
-    # if hash_count is greater than g[group_count]
-    # if the length of g is equal to group_count and there is still #s in s
-  if group_count > len(g)-1:
-    return 0
-  if s.count("#") > sum(g):
-    return 0
-  if hash_count > g[group_count]:
-    return 0
-  if (len(g) == group_count and "#" in s):
-    return 0
-  # --- go through each character and keep track of what group we are on ---
-  for i in range(len(s)):
-    if s[i] == "?":
-      # if we hit a ?, split and recurse
-      return checkLineGrouping("#" + s[1:], g, hash_count, group_count) + checkLineGrouping("." + s[1:], g, hash_count, group_count)
-    elif s[i] == ".":
-      # if we hit a ., shave it off, increment group_count if the hash_count is not 0, reset hash_count, recurse
-      if hash_count > 0:
-        group_count += 1
-        hash_count = 0
-      return checkLineGrouping(s[1:], g, hash_count, group_count)
-    elif s[i] == "#":
-      # if we hit a #, increment hash_count, shave it off, recurse
-      return checkLineGrouping(s[1:], g, hash_count + 1, group_count)
+    else:
+      total += checkLineGrouping(s[1:], g, hash_count)
+  return total
   
 
 def unfold(s, g):
