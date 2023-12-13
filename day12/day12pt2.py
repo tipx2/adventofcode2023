@@ -1,4 +1,5 @@
 from functools import cache
+import time
 with open("day12/input12.txt") as f:
     lines = f.readlines()
 
@@ -7,6 +8,14 @@ def checkLineGrouping(s : str, g : tuple, hash_count=0):
   if not s:
     return (len(g) == 0 and hash_count == 0) or (len(g) == 1 and g[0] == hash_count)
 
+  
+  if len(s) + hash_count < sum(g):
+    return 0
+  if len(g) == 0 and "#" in s:
+    return 0
+  
+
+  
   total = 0
   if s[0] == "?":
     total += checkLineGrouping("#" + s[1:], g, hash_count) + checkLineGrouping("." + s[1:], g, hash_count)
@@ -32,6 +41,7 @@ def unfold(s, g):
   g = g * 5
   return s, g
 
+start = time.time()
 total = 0
 for z, line in enumerate(lines):
     springs, grouping = line.split(" ")
@@ -39,5 +49,5 @@ for z, line in enumerate(lines):
     
     springs, grouping = unfold(springs, grouping)
     total += checkLineGrouping(springs, grouping)
-
-print(total)
+end = time.time()
+print(total, end - start)
