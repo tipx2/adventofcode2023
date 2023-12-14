@@ -14,8 +14,6 @@ def checkLineGrouping(s : str, g : tuple, hash_count=0):
   if len(g) == 0 and "#" in s:
     return 0
   
-
-  
   total = 0
   if s[0] == "?":
     total += checkLineGrouping("#" + s[1:], g, hash_count) + checkLineGrouping("." + s[1:], g, hash_count)
