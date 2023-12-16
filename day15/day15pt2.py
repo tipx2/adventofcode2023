@@ -1,6 +1,6 @@
 import re
 with open("day15/input15.txt") as f:
-  line = f.read()
+  line = f.read().strip()
 
 line = line.split(",")
 
@@ -19,7 +19,7 @@ def getPower(h):
       labelpos = list(h[key].keys()).index(label)
       total += (key + 1) * (labelpos + 1) * h[key][label]
   return total
-      
+
 
 
 hashmap = {} # dict of dicts
