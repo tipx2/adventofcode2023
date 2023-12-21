@@ -34,7 +34,7 @@ def findPath(conditions, path, target):
 
 def processRange(ra):
 		total = 1
-		for x in ["x", "m", "a", "s"]:
+		for x in "xmas":
 				total *= (ra[x][1] - ra[x][0] + 1)
 		return total
 
