@@ -1,5 +1,8 @@
 # AOC
+*.pickle
 *.txt
+*.dot
+*.svg
 importer.py
 
 # Byte-compiled / optimized / DLL files
